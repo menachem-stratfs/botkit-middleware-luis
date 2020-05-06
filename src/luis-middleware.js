@@ -4,7 +4,8 @@ module.exports = {
     middleware: {
         receive: receive,
         hereIntent: hereIntent,
-        hereAction: hereAction
+        hereAction: hereAction,
+        getEntity: getEntity,
     }
 };
 
@@ -97,4 +98,9 @@ function hereAction(tests, message) {
         }
     }
     return false;
+}
+
+function getEntity({ entities = [] }, ...types) {
+    const entity = entities.find(entity => types.includes(entity.type));
+    return entity && (entity.resolution.value || entity.resolution.values);
 }
