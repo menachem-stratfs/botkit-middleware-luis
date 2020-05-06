@@ -20,6 +20,7 @@ function receive(options) {
     }
     var minThreshold = options.minThreshold || 0.1;
     var captureThreshold = options.captureThreshold || 0.7;
+    var alwaysIncludeEntities = options.alwaysIncludeEntities || false;
     return function (bot, message, next) {
         // We will only process the text and either there's no topIntent
         // or the score for the topIntent is below the captureThreshold.
@@ -32,6 +33,9 @@ function receive(options) {
 
                         var result = JSON.parse(body);
 
+                        if (alwaysIncludeEntities) {
+                            message.entities = result.entities || [];
+                        }
 						if (result.topScoringIntent) {
 							// API v2.0
 							message.topIntent = result.topScoringIntent;
